@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 
 import { Consumer } from '../../context'
 
@@ -8,19 +7,9 @@ class Search extends Component {
     trackTitle: '',
   }
 
-  findTrack = e => {
+  findTrack = (e, value) => {
     e.preventDefault()
-    axios
-      .get(
-        `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.search?q_track=${
-          this.state.trackTitle
-        }&page_size=10&page=1&s_track_rating=desc&apikey=${process.env.REACT_APP_MM_KEY}`,
-      )
-      .then(res => {
-        console.log('res.data', res.data)
-        //this.setState({ track_list: res.data.message.body.track_list })
-      })
-      .catch(err => console.log(err))
+    value.dispatch(this.state.trackTitle)
   }
 
   onChange = e => {
@@ -37,7 +26,7 @@ class Search extends Component {
                 <i className="fas fa-music" /> Search for a song
               </h1>
               <p className="lead text-center">Get the lyrics for a song</p>
-              <form onSubmit={this.findTrack}>
+              <form onSubmit={(e) => this.findTrack(e, value)}>
                 <div className="form-group">
                   <input
                     type="text"
